@@ -164,3 +164,88 @@ print("Array is clear!")
 
 
 // Struct'ın içerisindeki property var olsa bile eğer struct const ise property değiştirilemez. Class'larda durum böyle değildir. Because classes points to some data in memory, whereas structs are one value such as the number 5.Bu yüzden class'larda mutating keyword bulunmaz. (Struct const ise mutating keyword işe yaramaz.)
+
+
+//Checkpoint 7
+
+// • Make a class hierarchy for animals.
+// • Start with Animal. Add a legs property for the number of legs an animal has.
+// • Make Dog a subclass of Animal, giving it a speak method that prints a dog barking string, but each subclass should print something different.
+// • Make TurkishDog and EnglishDog subclasses of Dog.
+// • Make Cat an Animal subclass. Add a speak method, with each subclass printing something different, and an isTame Boolean, set with an initializer.
+// • Make Persian and Lion as subclasses of Cat.
+
+class Animals {
+    private(set) var legs: Int
+    
+    init(legs: Int) {
+        self.legs = legs
+    }
+}
+
+class Dog: Animals {
+    func speak(){
+        print("Barking...")
+    }
+}
+
+class TurkishDog: Dog {
+    override func speak() {
+        print("Hav hav hav...")
+    }
+}
+
+class SwedishDog: Dog {
+    override func speak() {
+        print("Woof woof...")
+    }
+}
+
+class Cat: Animals {
+    let isTame: Bool
+    
+    init(isTame: Bool, legs: Int) {
+        self.isTame = isTame
+        super.init(legs: legs)
+    }
+    
+    func speak() {
+        print("Meow...")
+    }
+}
+
+class TurkishCat: Cat {
+    override func speak() {
+        print("Miyav miyav...")
+    }
+}
+
+class SwedishCat: Cat {
+    override func speak() {
+        print("Mjau mjao...")
+    }
+}
+
+let merlin = TurkishDog(legs: 4)
+merlin.speak()
+print("Merlin has \(merlin.legs) legs.")
+//Hav hav hav...
+//Merlin has 4 legs.
+
+let osman = TurkishCat(isTame: true, legs: 4)
+osman.speak()
+print("Osman has \(osman.legs) legs.")
+//Miyav miyav...
+//Osman has 4 legs.
+
+let corgi = SwedishDog(legs: 3)
+corgi.speak()
+print("Corgi has \(corgi.legs) legs.")
+//Woof woof...
+//Corgi has 3 legs.
+
+let poodle = SwedishCat(isTame: false, legs: 4)
+poodle.speak()
+print("Poodle has \(poodle.legs) legs.")
+//Mjau mjao...
+//Poodle has 4 legs.
