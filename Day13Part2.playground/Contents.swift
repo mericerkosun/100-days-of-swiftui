@@ -148,24 +148,22 @@ protocol Building {
     func summary()
 }
 
+extension Building {
+    func summary(){
+        print("Welcome to \(self)\nTotal Room : \(totalRooms)\nCost : \(cost)\nEstate Agent : \(estateAgent)")
+    }
+}
+
 struct House: Building {
     var totalRooms: Int
     var cost: Int
     var estateAgent: String
-    
-    func summary() {
-        print("Welcome to House\nTotal Room : \(totalRooms)\nCost : \(cost)\nEstate Agent : \(estateAgent)")
-    }
 }
 
 struct Office: Building {
     let totalRooms: Int
     let cost: Int
     let estateAgent: String
-    
-    func summary() {
-        print("Welcome to Office\nTotal Room : \(totalRooms)\nCost : \(cost)\nEstate Agent : \(estateAgent)")
-    }
 }
 
 var house = House(totalRooms: 5, cost: 200_000, estateAgent: "BlaBla Estate")
