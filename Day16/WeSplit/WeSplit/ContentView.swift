@@ -8,14 +8,57 @@
 import SwiftUI
 
 struct ContentView: View {
-    var students = ["Harry","Hermonie","Ron"]
-    @State private var selectedStudent = "Harry"
+    @State private var checkAmount = 0.0
+    @State private var numberofPeople = 2
+    @State private var tipPercetage = 15
+    @FocusState private var amountIsFocused: Bool
+    
+    var totalPerPerson: Double {
+        let personCount = Double(numberofPeople + 2)
+        let tipSelection = Double(tipPercetage)
+        
+        let totalGrade = checkAmount + (checkAmount * tipSelection / 100)
+        let amountPerPerson = totalGrade / personCount
+        return amountPerPerson
+    }
+    
+    let tipPercenrages = [0,5,10,15,20,25]
     
     var body: some View {
-        Form {
-            Picker("Select your student", selection: $selectedStudent) {
-                ForEach(students, id: \.self){
-                        Text($0)
+        NavigationStack {
+            Form {
+                Section {
+                    TextField("Amount", value: $checkAmount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                        .keyboardType(.decimalPad)
+                        .focused($amountIsFocused)
+                    
+                    Picker("Number of People", selection: $numberofPeople){
+                        ForEach(2..<51) {
+                            Text("\($0) people")
+                        }
+                    }
+                    .pickerStyle(.navigationLink)
+                }
+                
+                Section("How much do you want to tip?") {
+                    Picker("Tip Percentage", selection: $tipPercetage) {
+                        ForEach(tipPercenrages, id: \.self) {
+                            Text($0,format: .percent)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                }
+                
+                Section {
+                    Text(totalPerPerson, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                }
+            }
+            .navigationTitle("WeSplit")
+            .toolbar {
+                if amountIsFocused {
+                    Button("Done") {
+                        amountIsFocused = false
+                    }
                 }
             }
         }
