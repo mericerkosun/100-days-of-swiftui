@@ -48,7 +48,7 @@ struct ContentView: View {
                             Image(countries[number])
                                 .clipShape(.capsule)
                                 .shadow(radius: 5)
-                        }	
+                        }
                     }
                 }
                 .frame(maxWidth:.infinity)
