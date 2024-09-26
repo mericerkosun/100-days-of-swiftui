@@ -54,6 +54,8 @@ struct ContentView: View {
                 }
                 
                 Section("Amount per person") {
+                    tipPercetage == 0 ?
+                    Text(totalPerPerson, format: .currency(code: Locale.current.currency?.identifier ?? "USD")).foregroundStyle(.red) :
                     Text(totalPerPerson, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
                 }
                 
@@ -61,7 +63,7 @@ struct ContentView: View {
                     Text(totalAmount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
                 }
             }
-            .navigationTitle("WeSplit")
+            .navigationTitle("WeSplit").navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 if amountIsFocused {
                     Button("Done") {
