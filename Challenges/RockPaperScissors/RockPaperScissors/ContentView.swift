@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     
     @State private var playerScore = 0
-    @State private var qCount = 11
+    @State private var qCount = 1
     
     @State private var moves = ["👊", "🫱", "✌️"]
     @State private var randomSelect = Int.random(in: 0...2)
@@ -34,7 +34,7 @@ struct ContentView: View {
                         .font(.title)
                     Spacer()
                     ForEach(0..<3) { number in
-                        Button("\(moves[number])") {
+                        Button {
                             let answer = game(move: moves[randomSelect], challenge: shouldWin)
                             if ( qCount <= 10) {
                                 if(moves[number] == answer) {
@@ -47,9 +47,12 @@ struct ContentView: View {
                             } else {
                                 
                             }
+                        } label: {
+                            Text("\(moves[number])")
+                                .frame(width: 200)
                         }
                         .buttonStyle(.borderedProminent)
-                        .tint(.orange)
+                        .tint(.secondary)
                         .font(.system(size: 100))
                     }
                     Spacer()
