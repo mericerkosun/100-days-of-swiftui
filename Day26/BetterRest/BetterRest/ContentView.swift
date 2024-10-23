@@ -12,7 +12,7 @@ struct ContentView: View {
     
     @State private var wakeUp = defaultWakeTime
     @State private var sleepAmount = 8.0
-    @State private var coffeeAmount = 1
+    @State private var coffeeAmount = 3
     
     @State private var alertTitle = ""
     @State private var alertMessage = ""
@@ -29,36 +29,43 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             Form {
-                VStack (alignment: .leading, spacing: 0) {
-                    Text("When do you want to wake up ?")
-                        .font(.headline)
+                if alertMessage != "" {
+                    Section ("Recommended bed time") {
+                            Text(alertMessage)
+                    }
+                }
+                Section ("When do you want to wake up ?") {
                     DatePicker("Please enter a time", selection: $wakeUp, displayedComponents: .hourAndMinute)
                         .labelsHidden()
+                        .padding(5)
                 }
                 
-                VStack (alignment: .leading, spacing: 0) {
-                    Text("Desired amount of sleep")
-                        .font(.headline)
-                    
+                Section ("Desired amount of sleep") {
                     Stepper("\(sleepAmount.formatted()) hours", value: $sleepAmount, in: 2...12, step: 0.25)
+                        .padding(5)
                 }
                 
-                VStack (alignment: .leading, spacing: 0) {
-                    Text("Daily coffee intake")
-                        .font(.headline)
-                    
-                    Stepper(coffeeAmount == 1 ? "1 cup" : "\(coffeeAmount) cup(s)", value: $coffeeAmount, in: 1...20)
+                Section ("Daily coffee intake") {
+                    //Stepper(coffeeAmount == 1 ? "1 cup" : "\(coffeeAmount) cups", value: $coffeeAmount, in: 1...20)
+                    Picker("Coffe Amount", selection: $coffeeAmount, content: {
+                        ForEach(1..<21, id: \.self) { number in
+                            Text(number == 1 ? "1 cup" : "\(number) cups")
+                            }
+                    })
+                    .pickerStyle(WheelPickerStyle())
                 }
             }
             .navigationTitle("BetterRest")
-            .toolbar {
-                Button("Calculate", action: calculateBedtime)
-            }
+//            .toolbar {
+//                Button("Calculate", action: calculateBedtime)
+//            }
             .alert(alertTitle, isPresented: $showingAlert) {
                 Button("OK") {}
             } message: {
                 Text(alertMessage)
             }
+            Button("Calculate", action: calculateBedtime)
+                .font(.system(size: 22))
         }
     }
     
