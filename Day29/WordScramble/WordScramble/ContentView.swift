@@ -17,6 +17,8 @@ struct ContentView: View {
     @State private var errorMessage = ""
     @State private var showingError = false
     
+    @State private var score = 0
+    
     var body: some View {
         NavigationStack {
             List {
@@ -35,7 +37,20 @@ struct ContentView: View {
                 }
             }
             .navigationTitle(rootWord)
-        } 
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Restart") {
+                        startGame()
+                    }
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .status) {
+                    Text("Score : \(score)")
+                        .font(.title2)
+                }
+            }
+        }
         .onSubmit(addNewWord)
         .onAppear(perform: startGame)
         .alert(errorTitle, isPresented: $showingError) {
@@ -50,6 +65,12 @@ struct ContentView: View {
         let answer = newWord.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
         
         guard answer.count > 0 else { return }
+        
+        guard shorterThan3(word: answer) else {
+            wordError(title: "Invalid input", message: "Your answer can't be less than 3 characters or same as start word.")
+            newWord = ""
+            return
+        }
         
         guard isOriginal(word: answer) else {
             wordError(title: "Word used already", message: "Be more original")
@@ -73,6 +94,8 @@ struct ContentView: View {
             usedWords.insert(answer, at: 0)
         }
         
+        score += 1
+        
         newWord = ""
     }
     
@@ -81,6 +104,8 @@ struct ContentView: View {
             if let fileContents = try? String(contentsOf: fileURL, encoding: .utf8) {
                 let wordArray = fileContents.components(separatedBy: "\n")
                 rootWord = wordArray.randomElement() ?? "silkworm"
+                usedWords = []
+                score = 0
                 return
             }
         }
@@ -121,6 +146,18 @@ struct ContentView: View {
         errorTitle = title
         errorMessage = message
         showingError = true
+    }
+    
+    func shorterThan3(word: String) -> Bool {
+        
+        if word.count < 3 {
+            return false
+        }
+        if (word == rootWord) {
+            return false
+        }
+        
+        return true
     }
 }
 
