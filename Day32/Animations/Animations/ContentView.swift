@@ -44,7 +44,19 @@ struct ContentView: View {
                 Star()
             }
 
-        VStack {
+        VStack (spacing: 30) {
+            Text("PREMIUM")
+                .foregroundStyle(.white)
+                .frame(width: 300, height: 175)
+                .background(.black)
+                .font(.system(.largeTitle,weight: .bold))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 15)
+                        .stroke(LinearGradient(colors: [.blue, .purple], startPoint: .leading, endPoint: .trailing), lineWidth: 5)
+                        .shadow(color: Color.teal.opacity(0.9), radius: 10)
+                        .frame(width: 225, height: 75)
+                }
+            
             Button("Tap me") {
                         isScaled.toggle()
                     }
@@ -53,7 +65,7 @@ struct ContentView: View {
                     .foregroundColor(.white)
                     .scaleEffect(isScaled ? 1.5 : 1.0)
                     .animation(.spring(), value: isScaled)
-                    .padding(100)
+                    .padding(.bottom, 35)
             
             Button("TAP ME") {
 //                animationAmount += 1
