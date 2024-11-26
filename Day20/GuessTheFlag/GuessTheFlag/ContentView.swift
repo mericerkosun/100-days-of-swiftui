@@ -44,6 +44,9 @@ struct ContentView: View {
     @State private var count = 1
     @State private var isGameOver = false
     
+    @State private var tapped: Int? = nil
+    @State private var tapped2: Int? = nil
+    
     var body: some View {
         ZStack {
             RadialGradient(stops: [
@@ -66,13 +69,22 @@ struct ContentView: View {
                     }
                     
                     ForEach(0..<3) { number in
-                        Button {
-                            
+                        Button(action: {
                             flagTapped(number)
-                            
-                        } label: {
+                            withAnimation() {
+                                tapped = number
+                            }
+                            withAnimation() {
+                                tapped2 = number
+                            }
+                        }) {
                             FlagImage(imageName: countries[number])
                         }
+                        .rotation3DEffect(.degrees(tapped == number ? 360 : 0), axis: (x: 0, y: 1, z: 0))
+                        .opacity(tapped2 == nil || tapped2 == number ? 1 : 0.25)
+                        .scaleEffect(tapped2 == nil || tapped2 == number ? 1 : 0.5)
+                        .animation(.easeInOut, value: tapped2)
+                        
                     }
                 }
                 .frame(maxWidth:.infinity)
@@ -132,6 +144,8 @@ struct ContentView: View {
     }
     
     func askQuestion(){
+        tapped = nil
+        tapped2 = nil
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
         count += 1
