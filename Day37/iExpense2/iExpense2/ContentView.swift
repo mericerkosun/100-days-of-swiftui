@@ -35,7 +35,8 @@ struct ContentView: View {
 
                         Spacer()
                         
-                        ColoredText(value: item.amount, currency: currency)
+//                        ColoredText(value: item.amount, currency: item.currencyType)
+                        Text(item.amount, format: .currency(code: "\(item.currencyType)"))
                     }
                 }
                 .onDelete(perform: removeItems)
@@ -48,6 +49,9 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("iExpense")
+        }
+        .onAppear{
+            currency.selectedCurrency = UserDefaults.standard.string(forKey: "latestCurrency") ?? "ERR"
         }
         .sheet(isPresented: $showingAddExpense) {
             AddView(expensesOh: expensesAh, currency: currency)
@@ -64,6 +68,7 @@ struct ExpenseItem: Identifiable, Codable {
     let name: String
     let type: String
     let amount: Double
+    let currencyType: String
 }
 
 @Observable

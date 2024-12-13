@@ -36,8 +36,9 @@ struct AddView: View {
             .navigationTitle("Add new expense")
             .toolbar {
                 Button("Save") {
-                    let item = ExpenseItem(name: name, type: type, amount: amount)
+                    let item = ExpenseItem(name: name, type: type, amount: amount, currencyType: currency.currencyDictionary[currency.selectedCurrency] ?? "ERR")
                     expensesOh.items.append(item)
+                    UserDefaults.standard.set(currency.selectedCurrency, forKey: "latestCurrency")
                     dismiss()
                 }
             }
