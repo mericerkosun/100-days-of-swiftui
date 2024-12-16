@@ -9,7 +9,28 @@ import SwiftUI
 
 struct ScrollViewUsage: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ScrollView (.horizontal) {
+            LazyHStack(spacing: 10) {
+                ForEach(0..<100) {
+                    CustomText("Item \($0)")
+                        .font(.title)
+                }
+            }
+            .frame(maxWidth: .infinity) // Scroll özelliğini bütün ekrana yaymak için.
+        }
+    }
+}
+
+struct CustomText: View {
+    let text: String
+
+    var body: some View {
+        Text(text)
+    }
+
+    init(_ text: String) {
+        print("Creating a new CustomText")
+        self.text = text
     }
 }
 

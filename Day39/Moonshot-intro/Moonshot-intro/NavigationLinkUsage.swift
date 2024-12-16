@@ -9,7 +9,23 @@ import SwiftUI
 
 struct NavigationLinkUsage: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+//            NavigationLink {
+//                Text("Detail View")
+//            } label: {
+//                VStack {
+//                    Text("This is the label")
+//                    Text("So is this")
+//                    Image(systemName: "face.smiling")
+//                }
+//                .font(.largeTitle)
+            List(0..<30) { row in
+                NavigationLink("Row \(row)") {
+                    Text("Detail Row \(row)")
+                }
+            }
+            .navigationTitle("SwiftUI")
+        }
     }
 }
 
