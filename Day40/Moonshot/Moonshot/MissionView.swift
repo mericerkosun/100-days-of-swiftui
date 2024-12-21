@@ -30,10 +30,14 @@ struct MissionView: View {
                 Image(mission.image)
                     .resizable()
                     .scaledToFit()
-                    .containerRelativeFrame(.horizontal) { width, axis in
-                        width * 0.6
+                    .containerRelativeFrame(.horizontal) { size, axis in
+                        size * 0.6
                     }
-//                    .padding(.top)
+                    .padding(.top)
+                
+                Text(mission.formattedLaunchDate2)
+                    .font(.title2)
+                    .padding(.top)
                 
                 VStack(alignment: .leading) {
                     
@@ -69,10 +73,10 @@ struct MissionView: View {
                                     Image(crewMember.astronaut.id)
                                         .resizable()
                                         .frame(width: 104, height: 72)
-                                        .clipShape(.capsule)
+//                                        .clipShape(.capsule)
                                         .overlay(
-                                            Capsule()
-                                                .strokeBorder(.white, lineWidth: 1)
+                                            RoundedRectangle(cornerRadius: 5, style: .continuous)
+                                                .strokeBorder(.white, lineWidth: 1.5)
                                         )
 
                                     VStack(alignment: .leading) {
@@ -106,6 +110,6 @@ struct CrewMember {
     let missions: [Mission] = Bundle.main.decode("missions.json")
     let astronauts: [String: Astronaut] = Bundle.main.decode("astronauts.json")
 
-    return MissionView(mission: missions[0], astronauts: astronauts)
+    return MissionView(mission: missions[1], astronauts: astronauts)
         .preferredColorScheme(.dark)
 }
