@@ -1,8 +1,8 @@
 //
 //  ContentView.swift
-//  Navigation-intro2
+//  SavingNavStackPathsCodable
 //
-//  Created by Meriç Erkoşun on 23.12.2024.
+//  Created by Meriç Erkoşun on 24.12.2024.
 //
 
 import SwiftUI
@@ -28,7 +28,6 @@ struct ContentView: View {
 
 struct DetailView: View {
     var number: Int
-//    @Binding var path: [Int]
 
     var body: some View {
         NavigationLink("Go to Random Number", value: Int.random(in: 1...1000))
@@ -65,7 +64,7 @@ class PathStore {
             }
             
 //            Second, when we decode our JSON in the initializer we need to decode to a specific type, then use the decoded data to create a new NavigationPath:
-//            
+//
 //            if let decoded = try? JSONDecoder().decode(NavigationPath.CodableRepresentation.self, from: data) {
 //                path = NavigationPath(decoded)
 //                return
