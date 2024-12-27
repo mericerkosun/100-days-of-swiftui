@@ -142,7 +142,36 @@ struct Habit: Identifiable, Hashable, Codable {
 
 @Observable
 class HabitList {
-    var habits: [Habit] = [Habit(name: "Spor", description: "Koşu", count: 2),Habit(name: "Ders", description: ".NET Geliştirme", count: 3)]
+    var habits: [Habit] = [] {
+        didSet {
+            save()
+        }
+    }
+    
+    init() {
+        load()
+    }
+    
+    private func save() {
+        if let encoded = try? JSONEncoder().encode(habits) {
+            UserDefaults.standard.set(encoded, forKey: "Habits")
+        }
+    }
+    
+    private func load() {
+        if let savedHabits = UserDefaults.standard.data(forKey: "Habits") {
+            if let decodedHabits = try? JSONDecoder().decode([Habit].self, from: savedHabits) {
+                habits = decodedHabits
+                return
+            }
+        }
+        
+        // Eğer kayıtlı veri yoksa veya yüklenemezse varsayılan değerleri kullan
+        habits = [
+            Habit(name: "Spor", description: "Koşu", count: 2),
+            Habit(name: "Ders", description: ".NET Geliştirme", count: 3)
+        ]
+    }
 }
 
 #Preview {
