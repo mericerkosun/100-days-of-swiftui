@@ -11,7 +11,7 @@ import SwiftUI
 struct CupcakeCorner_1App: App {
     var body: some Scene {
         WindowGroup {
-            ValidatingForms()
+            AddingCodableToObservable()
         }
     }
 }
