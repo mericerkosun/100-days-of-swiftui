@@ -10,8 +10,12 @@ import SwiftUI
 struct CheckoutView: View {
     
     var order : Order
+    
     @State private var confirmationMessage = ""
     @State private var showingConfirmation = false
+    
+    @State private var errorMessage = ""
+    @State private var showingError = false
     
     var body: some View {
         ScrollView {
@@ -42,6 +46,11 @@ struct CheckoutView: View {
         } message: {
             Text(confirmationMessage)
         }
+        .alert("Error!", isPresented: $showingError) {
+            Button("OK") { }
+        } message: {
+            Text(errorMessage)
+        }
         .navigationBarTitleDisplayMode(.inline)
         .scrollBounceBehavior(.basedOnSize)
     }
@@ -65,7 +74,10 @@ struct CheckoutView: View {
             showingConfirmation = true
             
         } catch {
+            showingError = true
+            errorMessage = "No Internet Connection. Please try again later."
             print("Checkout failed: \(error.localizedDescription)")
+            
         }
     }
 }

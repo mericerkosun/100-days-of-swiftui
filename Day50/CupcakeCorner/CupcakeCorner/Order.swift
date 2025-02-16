@@ -25,12 +25,30 @@ class Order: Codable {
     var extraFrosting = false
     var addSprinkles = false
     
-    var name = ""
-    var streetAddress = ""
-    var city = ""
-    var zip = ""
+    var name = UserDefaults.standard.string(forKey: "name") ?? "" {
+        didSet {
+            UserDefaults.standard.set(name, forKey: "name")
+        }
+    }
+    var streetAddress = UserDefaults.standard.string(forKey: "street") ?? "" {
+        didSet {
+            UserDefaults.standard.set(streetAddress, forKey: "street")
+        }
+    }
+    var city = UserDefaults.standard.string(forKey: "city") ?? "" {
+        didSet {
+            UserDefaults.standard.set(city, forKey: "city")
+        }
+    }
+    var zip = UserDefaults.standard.string(forKey: "zip") ?? "" {
+        didSet {
+            UserDefaults.standard.set(zip, forKey: "zip")
+        }
+    }
     
     var hasValidAddress: Bool {
+        
+        name = name.trimmingCharacters(in: .whitespaces)
         
         if name.isEmpty || streetAddress.isEmpty || city.isEmpty || zip.isEmpty {
             return false
