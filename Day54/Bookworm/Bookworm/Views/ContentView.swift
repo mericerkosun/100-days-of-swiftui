@@ -24,14 +24,18 @@ struct ContentView: View {
                 ForEach(books) { book in
                     NavigationLink(value: book) {
                         HStack {
+                            Image(systemName: "star.fill")
+                                .font(.largeTitle)
+                                .foregroundStyle(book.rating == 1 ? .red : .yellow)
                             EmojiRatingView(rating: book.rating)
                                 .font(.largeTitle)
                             
                             VStack (alignment: .leading) {
                                 Text(book.title)
+                                    .foregroundStyle(book.rating == 1 ? .red : .primary)
                                     .font(.headline)
                                 Text(book.author)
-                                    .foregroundStyle(.secondary)
+                                    .foregroundStyle(book.rating == 1 ? Color.red.opacity(0.8) : .secondary)
                             }
                         }
                     }

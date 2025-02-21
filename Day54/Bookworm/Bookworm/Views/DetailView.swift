@@ -42,6 +42,10 @@ struct DetailView: View {
 
             RatingView(rating: .constant(book.rating))
                 .font(.largeTitle)
+
+            Text(book.date, format: .dateTime.day().month().year())
+                .padding()
+                .font(.title2)
         }
         .navigationTitle(book.title)
         .navigationBarTitleDisplayMode(.inline)
@@ -67,6 +71,7 @@ struct DetailView: View {
 }
 
 #Preview {
+    // Temporary model container
     do {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: Book.self, configurations: config)
