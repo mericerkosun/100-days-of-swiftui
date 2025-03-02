@@ -13,8 +13,7 @@ struct AddView: View {
     @State private var name = ""
     @State private var type = "Personal"
     @State private var amount = 0.0
-    var expensesOh: Expenses
-    var currency: Currency
+    @Bindable var expenseVM: ExpenseItemViewModel
     
     
     let types = ["Business", "Personal"]
@@ -30,15 +29,15 @@ struct AddView: View {
                     }
                 }
                 
-                TextField("Amount", value: $amount, format: .currency(code: currency.currencyDictionary[currency.selectedCurrency] ?? "ERR"))
+                TextField("Amount", value: $amount, format: .currency(code: expenseVM.currencyDictionary[expenseVM.selectedCurrency] ?? "ERR"))
                     .keyboardType(.decimalPad)
             }
             .navigationTitle("Add new expense")
             .toolbar {
                 Button("Save") {
-                    let item = ExpenseItem(name: name, type: type, amount: amount, currencyType: currency.currencyDictionary[currency.selectedCurrency] ?? "ERR")
-                    expensesOh.items.append(item)
-                    UserDefaults.standard.set(currency.selectedCurrency, forKey: "latestCurrency")
+                    let item = ExpenseItem(name: name, type: type, amount: amount, currencyType: expenseVM.currencyDictionary[expenseVM.selectedCurrency] ?? "ERR")
+                    expenseVM.items.append(item)
+                    UserDefaults.standard.set(expenseVM.selectedCurrency, forKey: "latestCurrency")
                     dismiss()
                 }
             }
@@ -47,5 +46,5 @@ struct AddView: View {
 }
 
 #Preview {
-    AddView(expensesOh: Expenses(), currency: Currency())
+    AddView(expenseVM: ExpenseItemViewModel())
 }
