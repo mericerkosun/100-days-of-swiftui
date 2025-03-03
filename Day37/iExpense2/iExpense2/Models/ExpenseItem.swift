@@ -6,14 +6,16 @@
 //
 
 import Foundation
+import SwiftData
 
-@Observable
-class ExpenseItem: Identifiable, Codable {
+
+@Model
+class ExpenseItem: Identifiable {
     var id = UUID()
-    let name: String
-    let type: String
-    let amount: Double
-    let currencyType: String
+    var name: String
+    var type: String
+    var amount: Double
+    var currencyType: String
     
     init(id: UUID = UUID(), name: String, type: String, amount: Double, currencyType: String) {
         self.id = id

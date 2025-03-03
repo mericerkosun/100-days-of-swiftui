@@ -14,6 +14,7 @@ struct AddView: View {
     @State private var type = "Personal"
     @State private var amount = 0.0
     @Bindable var expenseVM: ExpenseItemViewModel
+    @Environment(\.modelContext) var modelContext
     
     
     let types = ["Business", "Personal"]
@@ -35,9 +36,7 @@ struct AddView: View {
             .navigationTitle("Add new expense")
             .toolbar {
                 Button("Save") {
-                    let item = ExpenseItem(name: name, type: type, amount: amount, currencyType: expenseVM.currencyDictionary[expenseVM.selectedCurrency] ?? "ERR")
-                    expenseVM.items.append(item)
-                    UserDefaults.standard.set(expenseVM.selectedCurrency, forKey: "latestCurrency")
+                    expenseVM.addExpense(name: name, type: type, amount: amount, currency: expenseVM.selectedCurrency, modelContext: modelContext)
                     dismiss()
                 }
             }

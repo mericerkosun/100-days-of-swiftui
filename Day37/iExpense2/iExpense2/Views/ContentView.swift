@@ -6,11 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
     
     @State private var expenseViewModel = ExpenseItemViewModel()
     @State private var showingAddExpense = false
+    
+    @Environment(\.modelContext) var modelContext
+    @Query var items: [ExpenseItem]
     
     var body: some View {
         NavigationStack {
@@ -23,7 +27,7 @@ struct ContentView: View {
                     }
                 }
                 
-                ForEach(expenseViewModel.items) { item in // Buradaki \.id ExpenseItem property olandır. ExpenseItem structuna Identifiable protocol sağladığımız için burada id: kullanmaya gerek kalmadı.
+                ForEach(items) { item in // Buradaki \.id ExpenseItem property olandır. ExpenseItem structuna Identifiable protocol sağladığımız için burada id: kullanmaya gerek kalmadı.
                     HStack {
                         VStack(alignment: .leading) {
                             Text(item.name)
@@ -35,13 +39,13 @@ struct ContentView: View {
 
                         Group {
                             if item.amount < 10 {
-                                Text(item.amount, format: .currency(code: "\(item.currencyType)"))
+                                Text(item.amount, format: .currency(code: expenseViewModel.currencyDictionary[item.currencyType] ?? "ERR"))
                                     .foregroundStyle(Color.green)
                             } else if item.amount < 100 {
-                                Text(item.amount, format: .currency(code: "\(item.currencyType)"))
+                                Text(item.amount, format: .currency(code: expenseViewModel.currencyDictionary[item.currencyType] ?? "ERR"))
                                     .foregroundStyle(Color.orange)
                             } else {
-                                Text(item.amount, format: .currency(code: "\(item.currencyType)"))
+                                Text(item.amount, format: .currency(code: expenseViewModel.currencyDictionary[item.currencyType] ?? "ERR"))
                                     .foregroundStyle(Color.red)
                             }
                         }
@@ -65,8 +69,12 @@ struct ContentView: View {
     }
     
     func removeItems(at offsets: IndexSet) {
-        expenseViewModel.items.remove(atOffsets: offsets)
+        for index in offsets {
+            let itemToDelete = items[index] // Silinecek öğeyi al
+            modelContext.delete(itemToDelete) // ModelContext üzerinden sil
+        }
     }
+    
 }
 
 #Preview {

@@ -6,27 +6,34 @@
 //
 
 import Foundation
+import SwiftData
 
 @Observable
 class ExpenseItemViewModel {
     
     var selectedCurrency = "US Dollar"
     let currencyDictionary = ["Canadian Dollar": "CAD", "Euro": "EUR", "Japanese Yen": "JPY", "Russian Ruble": "RUB", "Turkish Lira": "TRY", "US Dollar": "USD"]
-    
-    init() {
-        if let savedItems = UserDefaults.standard.data(forKey: "Items") {
-            if let decodedItems = try? JSONDecoder().decode([ExpenseItem].self, from: savedItems) {
-                items = decodedItems
-                return
-            }
-        }
+
+    func addExpense(name: String, type: String, amount: Double, currency: String, modelContext: ModelContext) {
+        let newExpense = ExpenseItem(name: name, type: type, amount: amount, currencyType: currency)
+        modelContext.insert(newExpense)
     }
     
-    var items = [ExpenseItem]() {
-        didSet {
-            if let encoded = try? JSONEncoder().encode(items) {
-                UserDefaults.standard.set(encoded, forKey: "Items")
-            }
-        }
-    }
+    
+//    init() {
+//        if let savedItems = UserDefaults.standard.data(forKey: "Items") {
+//            if let decodedItems = try? JSONDecoder().decode([ExpenseItem].self, from: savedItems) {
+//                items = decodedItems
+//                return
+//            }
+//        }
+//    }
+//    
+//    var items = [ExpenseItem]() {
+//        didSet {
+//            if let encoded = try? JSONEncoder().encode(items) {
+//                UserDefaults.standard.set(encoded, forKey: "Items")
+//            }
+//        }
+//    }
 }
